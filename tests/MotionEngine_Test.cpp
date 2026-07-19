@@ -3,10 +3,10 @@
  Logos Robotics SDK
 
  File:
-    CoreXYKinematics_Test.cpp
+    MotionEngine_Test.cpp
 
  Purpose:
-    Desktop integration test for CoreXY kinematics.
+    Motion Engine integration test.
 
  Module:
     Tests
@@ -21,44 +21,45 @@
 
 #include <iostream>
 
+#include "MotionEngine.h"
 #include "CoreXYKinematics.h"
 #include "DesktopMockHal.h"
-#include "MotionEngine.h"
 
 using namespace LogosRobotics;
 
 int main()
 {
+    std::cout << "========================================\n";
+    std::cout << " Logos Robotics SDK\n";
+    std::cout << " Motion Engine Test\n";
+    std::cout << " Build 004\n";
+    std::cout << "========================================\n\n";
+
     Hal::DesktopMockHal hal;
     Kinematics::CoreXYKinematics kinematics;
     Motion::MotionEngine engine(kinematics, hal);
 
-    std::cout << "========================================\n";
-    std::cout << " Logos Robotics SDK\n";
-    std::cout << " CoreXY Integration Test\n";
-    std::cout << "========================================\n\n";
+    Core::Result result = engine.initialize();
 
-    if (engine.initialize() != Core::Result::Ok)
+    if (result != Core::Result::Ok)
     {
         std::cout << "Initialization failed.\n";
         return -1;
     }
 
-    std::cout << "Moving to X=100, Y=50...\n";
-
     Core::Position position;
     position.x = 100;
     position.y = 50;
 
-    Core::Result result = engine.moveTo(position);
+    result = engine.moveTo(position);
 
     if (result == Core::Result::Ok)
     {
-        std::cout << "Motion completed successfully.\n";
+        std::cout << "Motion Engine test passed.\n";
     }
     else
     {
-        std::cout << "Motion failed.\n";
+        std::cout << "Motion Engine test failed.\n";
     }
 
     return 0;
